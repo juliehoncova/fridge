@@ -1,84 +1,84 @@
 # 🧊 What Is In The Fridge
 
-Interaktivní webová aplikace, která vám pomůže zjistit, co si můžete uvařit na základě ingrediencí, které máte doma.
+An interactive web application that helps you discover what recipes you can cook based on the ingredients you have at home.
 
-## ✨ Funkce
+## ✨ Features
 
-- **Obsáhlý seznam ingrediencí** - Více než 100 různých ingrediencí z kategorie:
-  - Maso a drůbež
-  - Ryby a mořské plody
-  - Vejce a mléčné výrobky
-  - Zelenina
-  - Ovoce
-  - Těstoviny a obiloviny
-  - Koření a omáčky
-  - A mnoho dalších
+- **Comprehensive Ingredient List** - Over 100 different ingredients categorized by:
+  - Meat and poultry
+  - Fish and seafood
+  - Eggs and dairy
+  - Vegetables
+  - Fruits
+  - Pasta and grains
+  - Spices and sauces
+  - And many more
 
-- **Interaktivní zaškrtávací políčka** - Snadno vyberte ingredience, které máte doma
+- **Interactive Checkboxes** - Easily select ingredients you have at home
 
-- **Vyhledávání ingrediencí** - Rychle najděte ingredienci, kterou hledáte
+- **Ingredient Search** - Quickly find the ingredient you're looking for
 
-- **Generátor receptů** - Kliknutím na tlačítko "Najít recepty" se zobrazí všechny recepty, které můžete vařit
+- **Recipe Generator** - Click the "Find Recipes" button to display all recipes you can cook
 
-- **Detailní informace o receptech**:
-  - Čas přípravy
-  - Počet ingrediencí, které máte
-  - Seznam chybějících ingrediencí
-  - Podrobný postup přípravy
-  - Procento shody s dostupnými ingrediencemi
+- **Detailed Recipe Information**:
+  - Preparation time
+  - Number of ingredients you have
+  - List of missing ingredients
+  - Step-by-step cooking instructions
+  - Recipe match percentage with available ingredients
 
-- **Responsivní design** - Funguje skvěle na počítačích, tabletech i mobilních telefonech
+- **Responsive Design** - Works great on computers, tablets, and mobile phones
 
-## 🚀 Použití
+## 🚀 Usage
 
-1. Otevřete soubor `index.html` v internetovém prohlížeči
-2. Vyberte ingredience, které máte doma, kliknutím na jejich zaškrtávací políčka
-3. Použijte vyhledávací pole pro rychlou navigaci (např. zadejte "kuře" a zobrazí se pouze ingredience obsahující toto slovo)
-4. Jakmile vyberete ingredience, klikněte na tlačítko **"🔍 Najít recepty"**
-5. Aplikace vám zobrazí všechny recepty, které můžete vařit (minimálně 50% shodu)
-6. Recepty jsou seřazeny podle procenta shody
-7. Pro vyčištění výběru klikněte na tlačítko **"✕ Vyčistit všechno"**
+1. Open the `index.html` file in your web browser
+2. Select ingredients you have at home by clicking their checkboxes
+3. Use the search box for quick navigation (e.g., type "chicken" to see only chicken-related ingredients)
+4. Once you've selected ingredients, click the **"🔍 Find Recipes"** button
+5. The app displays all recipes you can cook (minimum 50% match)
+6. Recipes are sorted by match percentage
+7. To clear the selection, click the **"✕ Clear All"** button
 
-## 📋 Počet receptů
+## 📋 Number of Recipes
 
-Aplikace obsahuje více než **20 připravených receptů** včetně:
+The app includes over **20 prepared recipes** including:
 - Spaghetti Bolognese
-- Kuřecí tikka masala
-- Vegetáriánský chili
+- Chicken Tikka Masala
+- Vegetarian Chili
 - Omelet
-- Grilovaný losos
-- Rýžový pokrm s kuřetem
-- A mnoho dalších
+- Grilled Salmon
+- Rice with Chicken
+- And many more
 
-## 🎨 Technologie
+## 🎨 Technologies
 
-- **HTML5** - Struktura aplikace
-- **CSS3** - Moderní stylování s gradientem a animacemi
-- **Vanilla JavaScript** - Kompletní logika bez externích knihoven
+- **HTML5** - Application structure
+- **CSS3** - Modern styling with gradients and animations
+- **Vanilla JavaScript** - Complete logic without external libraries
 
-## 💡 Tipy pro použití
+## 💡 Usage Tips
 
-- Čím více ingrediencí vyberete, tím více receptů najdete
-- Recepty jsou automaticky filtrovány - zobrazují se pouze ty, které mají alespoň 50% shodou
-- Recepty jsou seřazeny od nejvyšší shodou
-- Pokud vám chybí jen několik ingrediencí, seznam upozorní, co si můžete koupit
+- The more ingredients you select, the more recipes you'll find
+- Recipes are automatically filtered - only those with at least 50% match are shown
+- Recipes are sorted by highest match percentage first
+- If you're missing just a few ingredients, the list will tell you what to buy
 
-## 📱 Kompatibilita
+## 📱 Compatibility
 
 - ✅ Chrome/Chromium
 - ✅ Firefox
 - ✅ Safari
 - ✅ Edge
-- ✅ Mobilní prohlížeče
+- ✅ Mobile browsers
 
-## 🎯 Budoucí vylepšení
+## 🎯 Future Enhancements
 
-- Možnost přidání vlastních receptů
-- Ukládání vybraných ingrediencí v prohlížeči
-- Filtrování podle času přípravy
-- Export receptů
-- Možnost přísnějšího filtrování (např. pouze recepty, kde máte všechny ingredience)
+- Add custom recipes
+- Save selected ingredients in browser
+- Filter by preparation time
+- Export recipes
+- Stricter filtering (only recipes with all ingredients)
 
 ---
 
-**Užijte si vaření!** 👨‍🍳👩‍🍳
+**Enjoy cooking!** 👨‍🍳👩‍🍳
