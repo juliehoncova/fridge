@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -294,33 +294,33 @@
     <div class="container">
         <header>
             <h1>🧊 What Is In The Fridge</h1>
-            <p class="subtitle">Vyberte ingredience a zjistěte, co si můžete uvařit</p>
+            <p class="subtitle">Select ingredients and find out what you can cook</p>
         </header>
 
         <div class="main-content">
             <div class="ingredients-section">
-                <h2 class="section-title">📋 Ingredience</h2>
+                <h2 class="section-title">📋 Ingredients</h2>
                 <input 
                     type="text" 
                     class="search-box" 
                     id="ingredientSearch" 
-                    placeholder="Hledej ingredienci..."
+                    placeholder="Search ingredients..."
                 >
                 <div id="selectedCount" class="selected-count" style="display: none;">
-                    Vybrány: <span id="countValue">0</span> ingrediencí
+                    Selected: <span id="countValue">0</span> ingredients
                 </div>
                 <div class="ingredients-list" id="ingredientsList"></div>
             </div>
 
             <div style="grid-column: 1 / -1;">
                 <div class="recipes-section">
-                    <h2 class="section-title">👨‍🍳 Recepty</h2>
+                    <h2 class="section-title">👨‍🍳 Recipes</h2>
                     <div class="action-buttons">
                         <button class="btn-find-recipes" id="findRecipesBtn">
-                            🔍 Najít recepty
+                            🔍 Find Recipes
                         </button>
                         <button class="btn-clear" id="clearBtn">
-                            ✕ Vyčistit všechno
+                            ✕ Clear All
                         </button>
                     </div>
                     <div id="message" class="message"></div>
@@ -331,179 +331,179 @@
     </div>
 
     <script>
-        // Obsáhlý seznam ingrediencí
+        // Comprehensive list of ingredients
         const ingredients = [
-            // Maso a drůbež
-            'Kuřecí prsa', 'Mleté kuřecí maso', 'Kuřecí stehna', 'Hovězí maso', 'Mleté hovězí maso',
-            'Vepřové maso', 'Mleté vepřové maso', 'Klobása', 'Slanina', 'Šunka',
-            'Krůta', 'Kachna', 'Jelen', 'Jehně', 'Fazole',
+            // Meat and poultry
+            'Chicken Breast', 'Ground Chicken', 'Chicken Thighs', 'Beef', 'Ground Beef',
+            'Pork', 'Ground Pork', 'Sausage', 'Bacon', 'Ham',
+            'Turkey', 'Duck', 'Venison', 'Lamb', 'Beans',
 
-            // Ryby a mořské plody
-            'Losos', 'Pstruh', 'Treska', 'Tuna', 'Sardel', 'Makrela', 'Kalamáry', 'Garnáty', 'Ústřice', 'Mušle',
+            // Fish and seafood
+            'Salmon', 'Trout', 'Cod', 'Tuna', 'Sardine', 'Mackerel', 'Squid', 'Shrimp', 'Oyster', 'Mussels',
 
-            // Vejce a mléčné výrobky
-            'Vejce', 'Smetana', 'Máslice', 'Čerstvý sýr', 'Měkký sýr', 'Tvrdý sýr', 'Mozzarella', 'Parmezán',
-            'Ricotta', 'Mléko', 'Jogurt', 'Масло',
+            // Eggs and dairy
+            'Eggs', 'Sour Cream', 'Buttermilk', 'Fresh Cheese', 'Soft Cheese', 'Hard Cheese', 'Mozzarella', 'Parmesan',
+            'Ricotta', 'Milk', 'Yogurt', 'Butter',
 
-            // Zelenina
-            'Cibule', 'Česnek', 'Brambory', 'Batáty', 'Mrkev', 'Celer', 'Rajčata', 'Papriky',
-            'Okurka', 'Cuketa', 'Lilka', 'Přeláklí', 'Броколі', 'Květák', 'Zelí', 'Hlávkový salát',
-            'Špenát', 'Mangold', 'Pórek', 'Pórkové větve', 'Gingřský kořen', 'Okra', 'Artyčok',
+            // Vegetables
+            'Onion', 'Garlic', 'Potato', 'Sweet Potato', 'Carrot', 'Celery', 'Tomato', 'Bell Pepper',
+            'Cucumber', 'Zucchini', 'Eggplant', 'Cabbage', 'Broccoli', 'Cauliflower', 'Cabbage', 'Lettuce',
+            'Spinach', 'Swiss Chard', 'Leek', 'Leek Greens', 'Ginger Root', 'Okra', 'Artichoke',
 
-            // Ovoce
-            'Jablka', 'Hrušky', 'Banány', 'Jahody', 'Malin', 'Borůvky', 'Pomerančky', 'Citróny',
-            'Limetky', 'Melouny', 'Avokádo', 'Kokos', 'Ananas', 'Mango', 'Papáj', 'Granatová jablka',
-            'Třešeň', 'Víšeň', 'Broskve',
+            // Fruits
+            'Apple', 'Pear', 'Banana', 'Strawberry', 'Raspberry', 'Blueberry', 'Orange', 'Lemon',
+            'Lime', 'Melon', 'Avocado', 'Coconut', 'Pineapple', 'Mango', 'Papaya', 'Pomegranate',
+            'Cherry', 'Sour Cherry', 'Peach',
 
-            // Těstoviny a obiloviny
-            'Spaghetti', 'Penne', 'Lasagne', 'Rýže', 'Ryžová mouka', 'Pšeničná mouka',
-            'Žitná mouka', 'Kukuřičná mouka', 'Ovesné vločky', 'Couscous', 'Quinoa', 'Žita',
-            'Kroupy', 'Polenta', 'Chléb', 'Toustový chléb',
+            // Pasta and grains
+            'Spaghetti', 'Penne', 'Lasagna', 'Rice', 'Rice Flour', 'Wheat Flour',
+            'Rye Flour', 'Corn Flour', 'Oatmeal', 'Couscous', 'Quinoa', 'Wheat',
+            'Barley', 'Polenta', 'Bread', 'Toast Bread',
 
-            // Omáčky a koření
-            'Olivový olej', 'Rostlinný olej', 'Sezamový olej', 'Máslo', 'Česnek', 'Petržel',
-            'Bazalika', 'Oregáno', 'Tymián', 'Rozmarýn', 'Majoránka', 'Oregáno', 'Paprika',
-            'Pepř', 'Sůl', 'Cukr', 'Vanilka', 'Skořice', 'Kardamom', 'Koriandr', 'Kmín',
-            'Hořčice', 'Ocet', 'Worcesterova omáčka', 'Sójová omáčka', 'Čili omáčka',
+            // Sauces and spices
+            'Olive Oil', 'Vegetable Oil', 'Sesame Oil', 'Butter', 'Garlic', 'Parsley',
+            'Basil', 'Oregano', 'Thyme', 'Rosemary', 'Marjoram', 'Oregano', 'Paprika',
+            'Black Pepper', 'Salt', 'Sugar', 'Vanilla', 'Cinnamon', 'Cardamom', 'Coriander', 'Cumin',
+            'Mustard', 'Vinegar', 'Worcestershire Sauce', 'Soy Sauce', 'Chili Sauce',
 
-            // Speciální ingredience
-            'Med', 'Mák', 'Slunečnicové semínko', 'Dýňová semínka', 'Lískové oříšky', 'Mandle',
-            'Arašídy', 'Vlašské oříšky', 'Kešu', 'Pinové oříšky', 'Fazole', 'Čočka', 'Cizrna',
-            'Panenský kokosový olej', 'Mantle',
+            // Special ingredients
+            'Honey', 'Poppy Seeds', 'Sunflower Seeds', 'Pumpkin Seeds', 'Hazelnuts', 'Almonds',
+            'Peanuts', 'Walnuts', 'Cashews', 'Pine Nuts', 'Beans', 'Lentils', 'Chickpeas',
+            'Virgin Coconut Oil', 'Malt',
 
-            // Nápoje a tekutiny
-            'Voda', 'Vino', 'Pivo', 'Rum', 'Vodka', 'Brandy', 'Koňak',
+            // Beverages and liquids
+            'Water', 'Wine', 'Beer', 'Rum', 'Vodka', 'Brandy', 'Cognac',
 
-            // Další
-            'Chili', 'Káva', 'Čaj', 'Čokoláda', 'Kakao', 'Mák', 'Ocet balzamico', 'Tahini',
-            'Aromatické byliny', 'Kurkuma', 'Zázvorem', 'Muškátový oříšek'
+            // Other
+            'Chili', 'Coffee', 'Tea', 'Chocolate', 'Cocoa', 'Poppy', 'Balsamic Vinegar', 'Tahini',
+            'Aromatic Herbs', 'Turmeric', 'Ginger', 'Nutmeg'
         ];
 
-        // Databáze receptů
+        // Recipes database
         const recipes = [
             {
                 name: 'Spaghetti Bolognese',
-                ingredients: ['Spaghetti', 'Mleté hovězí maso', 'Rajčata', 'Cibule', 'Česnek', 'Olivový olej', 'Oregáno', 'Sůl', 'Pepř'],
-                instructions: '1. Zažhajte olej a restujte cibuli a česnek\n2. Přidejte mleté maso a restujte\n3. Vlijte rajčata a oregáno\n4. Vařte 20 minut\n5. Poznávaní těstoviny a podávejte',
+                ingredients: ['Spaghetti', 'Ground Beef', 'Tomato', 'Onion', 'Garlic', 'Olive Oil', 'Oregano', 'Salt', 'Black Pepper'],
+                instructions: '1. Heat oil and sauté onion and garlic\n2. Add ground beef and cook\n3. Add tomatoes and oregano\n4. Simmer for 20 minutes\n5. Cook pasta and serve',
                 time: '30 min'
             },
             {
-                name: 'Kuřecí tikka masala',
-                ingredients: ['Kuřecí prsa', 'Jogurt', 'Koření', 'Cibule', 'Česnek', 'Paprika', 'Skořice', 'Mleté kurkuma', 'Smetana', 'Rajčata'],
-                instructions: '1. Marinujte kuřete v jogurtu a koření\n2. Smažte kuřete\n3. Restujte cibuli a česnek\n4. Přidejte rajčata a smetan\n5. Přidejte kuřete zpět a vařte',
+                name: 'Chicken Tikka Masala',
+                ingredients: ['Chicken Breast', 'Yogurt', 'Spices', 'Onion', 'Garlic', 'Paprika', 'Cinnamon', 'Turmeric', 'Sour Cream', 'Tomato'],
+                instructions: '1. Marinate chicken in yogurt and spices\n2. Fry chicken\n3. Sauté onion and garlic\n4. Add tomatoes and sour cream\n5. Add chicken back and cook',
                 time: '45 min'
             },
             {
-                name: 'Vegetáriánský chili',
-                ingredients: ['Fazole', 'Rajčata', 'Paprika', 'Cibule', 'Česnek', 'Čili', 'Cumula', 'Olivový olej'],
-                instructions: '1. Restujte cibuli a česnek v oleji\n2. Přidejte papriku a rajčata\n3. Přidejte fazole a čili\n4. Vařte 30 minut',
+                name: 'Vegetarian Chili',
+                ingredients: ['Beans', 'Tomato', 'Bell Pepper', 'Onion', 'Garlic', 'Chili', 'Cumula', 'Olive Oil'],
+                instructions: '1. Sauté onion and garlic in oil\n2. Add bell pepper and tomatoes\n3. Add beans and chili\n4. Simmer for 30 minutes',
                 time: '40 min'
             },
             {
                 name: 'Omelet',
-                ingredients: ['Vejce', 'Máslo', 'Sůl', 'Pepř', 'Parmezan'],
-                instructions: '1. Vyklepte vejce do mísy\n2. Ušlehejte se solí a pepřem\n3. Rozpusťte máslo na pánvi\n4. Vlijte vejce a vařte, dokud není pevné',
+                ingredients: ['Eggs', 'Butter', 'Salt', 'Black Pepper', 'Parmesan'],
+                instructions: '1. Crack eggs into a bowl\n2. Beat with salt and pepper\n3. Melt butter in pan\n4. Pour eggs and cook until set',
                 time: '10 min'
             },
             {
-                name: 'Rýžový pokrm s kuřetem',
-                ingredients: ['Rýže', 'Kuřecí prsa', 'Paprika', 'Cibule', 'Česnek', 'Voda', 'Olivový olej'],
-                instructions: '1. Restujte cibuli a česnek\n2. Přidejte kuřete a smažte\n3. Přidejte rýži a papriku\n4. Vlijte vodu a vařte 20 minut',
+                name: 'Rice with Chicken',
+                ingredients: ['Rice', 'Chicken Breast', 'Bell Pepper', 'Onion', 'Garlic', 'Water', 'Olive Oil'],
+                instructions: '1. Sauté onion and garlic\n2. Add chicken and cook\n3. Add rice and bell pepper\n4. Pour water and cook for 20 minutes',
                 time: '35 min'
             },
             {
-                name: 'Zeleninová polévka',
-                ingredients: ['Brambory', 'Mrkev', 'Celer', 'Cibule', 'Rajčata', 'Voda', 'Sůl', 'Pepř', 'Petržel'],
-                instructions: '1. Pokrájejte zeleninu\n2. Vlijte vodu a přiveďte k varu\n3. Vaření, dokud není zelenina měkká\n4. Ochutinjte a podávejte',
+                name: 'Vegetable Soup',
+                ingredients: ['Potato', 'Carrot', 'Celery', 'Onion', 'Tomato', 'Water', 'Salt', 'Black Pepper', 'Parsley'],
+                instructions: '1. Chop vegetables\n2. Add water and bring to boil\n3. Cook until vegetables are soft\n4. Season and serve',
                 time: '40 min'
             },
             {
-                name: 'Pita s kuřetem',
-                ingredients: ['Kuřecí prsa', 'Cibule', 'Paprika', 'Měkký sýr', 'Rajčata', 'Salát'],
-                instructions: '1. Smažte pokrojené kuřete\n2. Opékejte pitu\n3. Naplňte pitu kuřetem a zeleninou\n4. Přidejte sýr a salát',
+                name: 'Pita with Chicken',
+                ingredients: ['Chicken Breast', 'Onion', 'Bell Pepper', 'Soft Cheese', 'Tomato', 'Lettuce'],
+                instructions: '1. Cook sliced chicken\n2. Toast pita bread\n3. Fill pita with chicken and vegetables\n4. Add cheese and lettuce',
                 time: '25 min'
             },
             {
-                name: 'Syrečka na másle s česnekem',
-                ingredients: ['Treska', 'Máslo', 'Česnek', 'Citrón', 'Petržel', 'Sůl', 'Pepř'],
-                instructions: '1. Připravte složené máslo s česnekem\n2. Smažte rybu na pánvi\n3. Umístěte máslo navrchu\n4. Podavačte s citrónopem',
+                name: 'Fish with Garlic Butter',
+                ingredients: ['Cod', 'Butter', 'Garlic', 'Lemon', 'Parsley', 'Salt', 'Black Pepper'],
+                instructions: '1. Prepare compound butter with garlic\n2. Pan-fry fish\n3. Place butter on top\n4. Serve with lemon',
                 time: '20 min'
             },
             {
-                name: 'Čokoládový dort',
-                ingredients: ['Čokoláda', 'Máslo', 'Vejce', 'Mouka', 'Cukr', 'Vanilka', 'Prášek do pečiva'],
-                instructions: '1. Roztavte čokoládu a máslo\n2. Ušlehejte vejce s cukrem\n3. Smíchejte ingredience\n4. Pečte na 180°C 30 minut',
+                name: 'Chocolate Cake',
+                ingredients: ['Chocolate', 'Butter', 'Eggs', 'Wheat Flour', 'Sugar', 'Vanilla', 'Baking Powder'],
+                instructions: '1. Melt chocolate and butter\n2. Beat eggs with sugar\n3. Mix ingredients\n4. Bake at 180°C for 30 minutes',
                 time: '45 min'
             },
             {
-                name: 'Bramborová kaše',
-                ingredients: ['Brambory', 'Máslo', 'Mléko', 'Sůl', 'Pepř', 'Parmezan'],
-                instructions: '1. Vařte brambory, dokud nejsou měkké\n2. Sceďte a vraťte do hrnce\n3. Přidejte máslo a mléko\n4. Utřete a ochutinjte',
+                name: 'Mashed Potatoes',
+                ingredients: ['Potato', 'Butter', 'Milk', 'Salt', 'Black Pepper', 'Parmesan'],
+                instructions: '1. Boil potatoes until soft\n2. Drain and return to pot\n3. Add butter and milk\n4. Mash and season',
                 time: '25 min'
             },
             {
-                name: 'Cesar salát',
-                ingredients: ['Hlávkový salát', 'Parmezan', 'Chléb', 'Česnek', 'Hořčice', 'Olivový olej', 'Citrón'],
-                instructions: '1. Pokrájejte hlávkový salát\n2. Vytvořte dressing z ostatních ingrediencí\n3. Smíchejte salát s dresingem\n4. Podavačte se pečivem',
+                name: 'Caesar Salad',
+                ingredients: ['Lettuce', 'Parmesan', 'Bread', 'Garlic', 'Mustard', 'Olive Oil', 'Lemon'],
+                instructions: '1. Chop lettuce\n2. Make dressing from remaining ingredients\n3. Toss salad with dressing\n4. Serve with croutons',
                 time: '15 min'
             },
             {
-                name: 'Těstovinový gratin',
-                ingredients: ['Penne', 'Mozzarella', 'Parmezan', 'Rajčata', 'Česnekový olej', 'Oregáno'],
-                instructions: '1. Vařte těstoviny\n2. Smíchejte s rajčaty a oregánem\n3. Umístěte do zapékací mísy\n4. Pokrojíce sýrem a pečte 20 minut',
+                name: 'Pasta Gratin',
+                ingredients: ['Penne', 'Mozzarella', 'Parmesan', 'Tomato', 'Garlic Oil', 'Oregano'],
+                instructions: '1. Cook pasta\n2. Mix with tomatoes and oregano\n3. Place in baking dish\n4. Top with cheese and bake for 20 minutes',
                 time: '35 min'
             },
             {
-                name: 'Smažená kuřecí nudlička',
-                ingredients: ['Kuřecí prsa', 'Rýže', 'Vejce', 'Cibule', 'Česnek', 'Sójová omáčka', 'Sezamový olej'],
-                instructions: '1. Pokrojíte kuřete a cibuli\n2. Smažte všechno na oleji\n3. Přidejte rýži a vejce\n4. Dochutite sojovou omáčkou',
+                name: 'Fried Chicken Noodles',
+                ingredients: ['Chicken Breast', 'Rice', 'Eggs', 'Onion', 'Garlic', 'Soy Sauce', 'Sesame Oil'],
+                instructions: '1. Chop chicken and onion\n2. Fry everything in oil\n3. Add rice and eggs\n4. Season with soy sauce',
                 time: '30 min'
             },
             {
-                name: 'Zapečený brambor',
-                ingredients: ['Brambory', 'Máslo', 'Smetana', 'Česnek', 'Parmezan', 'Sůl', 'Pepř'],
-                instructions: '1. Pokrájejte brambory\n2. Vrstvujte v zapékací míse\n3. Vlijte smetan a přidejte máslo\n4. Pečte 45 minut na 180°C',
+                name: 'Baked Potato',
+                ingredients: ['Potato', 'Butter', 'Sour Cream', 'Garlic', 'Parmesan', 'Salt', 'Black Pepper'],
+                instructions: '1. Slice potatoes\n2. Layer in baking dish\n3. Pour sour cream and add butter\n4. Bake for 45 minutes at 180°C',
                 time: '60 min'
             },
             {
-                name: 'Luštěninová polévka',
-                ingredients: ['Čočka', 'Cibule', 'Mrkev', 'Celer', 'Rajčata', 'Voda', 'Olivový olej', 'Sůl'],
-                instructions: '1. Restujte cibuli a mrkev\n2. Přidejte čočku a rajčata\n3. Vlijte vodu a vařte 30 minut\n4. Ochutinjte solí',
+                name: 'Lentil Soup',
+                ingredients: ['Lentils', 'Onion', 'Carrot', 'Celery', 'Tomato', 'Water', 'Olive Oil', 'Salt'],
+                instructions: '1. Sauté onion and carrot\n2. Add lentils and tomatoes\n3. Pour water and cook for 30 minutes\n4. Season with salt',
                 time: '45 min'
             },
             {
-                name: 'Grilovaný losos',
-                ingredients: ['Losos', 'Citrón', 'Petržel', 'Sůl', 'Pepř', 'Olivový olej'],
-                instructions: '1. Připravte gril\n2. Natřete lososa olejem\n3. Grilujte 4-5 minut z obou stran\n4. Podavačte s citrónem',
+                name: 'Grilled Salmon',
+                ingredients: ['Salmon', 'Lemon', 'Parsley', 'Salt', 'Black Pepper', 'Olive Oil'],
+                instructions: '1. Prepare grill\n2. Brush salmon with oil\n3. Grill for 4-5 minutes per side\n4. Serve with lemon',
                 time: '20 min'
             },
             {
-                name: 'Kuřecí nudličky s medem',
-                ingredients: ['Kuřecí prsa', 'Med', 'Sójová omáčka', 'Česnek', 'Zázvor', 'Sezamový olej'],
-                instructions: '1. Pokrojíte kuřete\n2. Restujte s česnekem a zázvor\n3. Přidejte medickou a sojovou omáčku\n4. Vařte 15 minut',
+                name: 'Chicken with Honey',
+                ingredients: ['Chicken Breast', 'Honey', 'Soy Sauce', 'Garlic', 'Ginger', 'Sesame Oil'],
+                instructions: '1. Chop chicken\n2. Cook with garlic and ginger\n3. Add honey and soy sauce\n4. Cook for 15 minutes',
                 time: '25 min'
             },
             {
-                name: 'Rajčatová omáčka',
-                ingredients: ['Rajčata', 'Cibule', 'Česnek', 'Olivový olej', 'Oregáno', 'Sůl', 'Pepř'],
-                instructions: '1. Restujte cibuli a česnek\n2. Přidejte rajčata a oregáno\n3. Vařte 20 minut\n4. Použijte ke těstovinama',
+                name: 'Tomato Sauce',
+                ingredients: ['Tomato', 'Onion', 'Garlic', 'Olive Oil', 'Oregano', 'Salt', 'Black Pepper'],
+                instructions: '1. Sauté onion and garlic\n2. Add tomatoes and oregano\n3. Cook for 20 minutes\n4. Use with pasta',
                 time: '30 min'
             },
             {
-                name: 'Smažená kuřecí maso',
-                ingredients: ['Kuřecí prsa', 'Mouka', 'Vejce', 'Sůl', 'Pepř', 'Rostlinný olej'],
-                instructions: '1. Připravte cesta s vejci\n2. Omočte maso v mouce a vejci\n3. Smažte v oleji, dokud není zlatavé\n4. Podavačte s citrónem',
+                name: 'Fried Chicken',
+                ingredients: ['Chicken Breast', 'Wheat Flour', 'Eggs', 'Salt', 'Black Pepper', 'Vegetable Oil'],
+                instructions: '1. Prepare batter with eggs\n2. Coat chicken in flour and egg\n3. Fry in oil until golden\n4. Serve with lemon',
                 time: '20 min'
             },
             {
-                name: 'Cuketový salátek',
-                ingredients: ['Cuketa', 'Rajčata', 'Cibule', 'Petržel', 'Olivový olej', 'Citrón', 'Sůl'],
-                instructions: '1. Pokrájejte cuketu a rajčata\n2. Přidejte cibuli a petržel\n3. Dochutite olejem a citrónem\n4. Nechte stát v chladičce',
+                name: 'Zucchini Salad',
+                ingredients: ['Zucchini', 'Tomato', 'Onion', 'Parsley', 'Olive Oil', 'Lemon', 'Salt'],
+                instructions: '1. Chop zucchini and tomatoes\n2. Add onion and parsley\n3. Dress with oil and lemon\n4. Chill before serving',
                 time: '15 min'
             }
         ];
 
-        // Inicializace
+        // Initialization
         const ingredientsList = document.getElementById('ingredientsList');
         const recipesList = document.getElementById('recipesList');
         const findRecipesBtn = document.getElementById('findRecipesBtn');
@@ -515,7 +515,7 @@
 
         let selectedIngredients = new Set();
 
-        // Vykreslení ingrediencí
+        // Render ingredients
         function renderIngredients(filter = '') {
             ingredientsList.innerHTML = '';
             const filtered = ingredients.filter(ing => 
@@ -559,11 +559,11 @@
             }
         }
 
-        // Hledání receptů
+        // Find recipes function
         function findRecipes() {
             if (selectedIngredients.size === 0) {
-                showMessage('Vyberte alespoň jednu ingredienci!', 'error');
-                recipesList.innerHTML = '<div class="no-recipes">Vyberte ingredience, abyste viděli recepty</div>';
+                showMessage('Select at least one ingredient!', 'error');
+                recipesList.innerHTML = '<div class="no-recipes">Select ingredients to see recipes</div>';
                 return;
             }
 
@@ -583,12 +583,12 @@
               .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
             if (matchedRecipes.length === 0) {
-                recipesList.innerHTML = '<div class="no-recipes">😢 Bohužel jsme nenašli žádné recepty s vašimi ingrediencemi. Zkuste přidat více ingrediencí!</div>';
-                showMessage(`Nenašli jsme recepty s více než 50% shodou. Máte jen ${selectedIngredients.size} ingrediencí.`, 'info');
+                recipesList.innerHTML = '<div class="no-recipes">😢 Unfortunately, we found no recipes with your ingredients. Try adding more ingredients!</div>';
+                showMessage(`No recipes found with more than 50% match. You have ${selectedIngredients.size} ingredients.`, 'info');
                 return;
             }
 
-            showMessage(`Našli jsme ${matchedRecipes.length} receptů! 🎉`, 'success');
+            showMessage(`Found ${matchedRecipes.length} recipes! 🎉`, 'success');
             renderRecipes(matchedRecipes);
         }
 
@@ -602,24 +602,24 @@
                 const html = `
                     <div class="recipe-name">${recipe.name}</div>
                     <div class="recipe-section">
-                        <div class="recipe-section-title">⏱️ Čas přípravy:</div>
+                        <div class="recipe-section-title">⏱️ Preparation Time:</div>
                         <div class="recipe-section-content">${recipe.time}</div>
                     </div>
                     <div class="recipe-section">
-                        <div class="recipe-section-title">✅ Máte:</div>
-                        <div class="recipe-section-content">${recipe.matchedCount}/${recipe.ingredients.length} ingrediencí</div>
+                        <div class="recipe-section-title">✅ You Have:</div>
+                        <div class="recipe-section-content">${recipe.matchedCount}/${recipe.ingredients.length} ingredients</div>
                     </div>
                     ${recipe.missingIngredients.length > 0 ? `
                         <div class="recipe-section">
-                            <div class="recipe-section-title">❌ Chybí vám:</div>
+                            <div class="recipe-section-title">❌ Missing:</div>
                             <div class="recipe-section-content">${recipe.missingIngredients.join(', ')}</div>
                         </div>
-                    ` : '<div class="recipe-section"><div class="recipe-section-content">🎉 Máte všechny ingredience!</div></div>'}
+                    ` : '<div class="recipe-section"><div class="recipe-section-content">🎉 You have all ingredients!</div></div>'}
                     <div class="recipe-section">
-                        <div class="recipe-section-title">📝 Postup:</div>
+                        <div class="recipe-section-title">📝 Instructions:</div>
                         <div class="recipe-section-content">${recipe.instructions.replace(/\n/g, '<br>')}</div>
                     </div>
-                    <div class="match-percentage">Shoda: ${recipe.matchPercentage}%</div>
+                    <div class="match-percentage">Match: ${recipe.matchPercentage}%</div>
                 `;
                 
                 card.innerHTML = html;
@@ -635,7 +635,7 @@
             messageDiv.style.color = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#667eea';
         }
 
-        // Event listenery
+        // Event listeners
         findRecipesBtn.addEventListener('click', findRecipes);
         clearBtn.addEventListener('click', () => {
             selectedIngredients.clear();
@@ -649,7 +649,7 @@
             renderIngredients(e.target.value);
         });
 
-        // Počáteční vykreslení
+        // Initial render
         renderIngredients();
         updateSelectedCount();
     </script>
