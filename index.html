@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is In The Fridge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .ingredients-section, .recipes-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .ingredients-list {
+            max-height: 600px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .ingredient-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .ingredient-item:hover {
+            background: #efefef;
+            transform: translateX(5px);
+        }
+
+        .ingredient-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .ingredient-item input[type="checkbox"]:checked + label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .ingredient-item label {
+            cursor: pointer;
+            flex: 1;
+            user-select: none;
+        }
+
+        .recipes-section {
+            grid-column: 1 / -1;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-find-recipes {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .btn-find-recipes:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-find-recipes:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-clear {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background: #d0d0d0;
+        }
+
+        .recipes-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .recipe-card {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: #667eea;
+        }
+
+        .recipe-name {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .recipe-section {
+            margin-bottom: 15px;
+        }
+
+        .recipe-section-title {
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 5px;
+            font-size: 0.95em;
+        }
+
+        .recipe-section-content {
+            padding-left: 15px;
+            color: #555;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .match-percentage {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
+        .no-recipes {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 1.1em;
+        }
+
+        .message {
+            padding: 15px;
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #667eea;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .selected-count {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .ingredients-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .recipes-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧊 What Is In The Fridge</h1>
+            <p class="subtitle">Vyberte ingredience a zjistěte, co si můžete uvařit</p>
+        </header>
+
+        <div class="main-content">
+            <div class="ingredients-section">
+                <h2 class="section-title">📋 Ingredience</h2>
+                <input 
+                    type="text" 
+                    class="search-box" 
+                    id="ingredientSearch" 
+                    placeholder="Hledej ingredienci..."
+                >
+                <div id="selectedCount" class="selected-count" style="display: none;">
+                    Vybrány: <span id="countValue">0</span> ingrediencí
+                </div>
+                <div class="ingredients-list" id="ingredientsList"></div>
+            </div>
+
+            <div style="grid-column: 1 / -1;">
+                <div class="recipes-section">
+                    <h2 class="section-title">👨‍🍳 Recepty</h2>
+                    <div class="action-buttons">
+                        <button class="btn-find-recipes" id="findRecipesBtn">
+                            🔍 Najít recepty
+                        </button>
+                        <button class="btn-clear" id="clearBtn">
+                            ✕ Vyčistit všechno
+                        </button>
+                    </div>
+                    <div id="message" class="message"></div>
+                    <div class="recipes-list" id="recipesList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Obsáhlý seznam ingrediencí
+        const ingredients = [
+            // Maso a drůbež
+            'Kuřecí prsa', 'Mleté kuřecí maso', 'Kuřecí stehna', 'Hovězí maso', 'Mleté hovězí maso',
+            'Vepřové maso', 'Mleté vepřové maso', 'Klobása', 'Slanina', 'Šunka',
+            'Krůta', 'Kachna', 'Jelen', 'Jehně', 'Fazole',
+
+            // Ryby a mořské plody
+            'Losos', 'Pstruh', 'Treska', 'Tuna', 'Sardel', 'Makrela', 'Kalamáry', 'Garnáty', 'Ústřice', 'Mušle',
+
+            // Vejce a mléčné výrobky
+            'Vejce', 'Smetana', 'Máslice', 'Čerstvý sýr', 'Měkký sýr', 'Tvrdý sýr', 'Mozzarella', 'Parmezán',
+            'Ricotta', 'Mléko', 'Jogurt', 'Масло',
+
+            // Zelenina
+            'Cibule', 'Česnek', 'Brambory', 'Batáty', 'Mrkev', 'Celer', 'Rajčata', 'Papriky',
+            'Okurka', 'Cuketa', 'Lilka', 'Přeláklí', 'Броколі', 'Květák', 'Zelí', 'Hlávkový salát',
+            'Špenát', 'Mangold', 'Pórek', 'Pórkové větve', 'Gingřský kořen', 'Okra', 'Artyčok',
+
+            // Ovoce
+            'Jablka', 'Hrušky', 'Banány', 'Jahody', 'Malin', 'Borůvky', 'Pomerančky', 'Citróny',
+            'Limetky', 'Melouny', 'Avokádo', 'Kokos', 'Ananas', 'Mango', 'Papáj', 'Granatová jablka',
+            'Třešeň', 'Víšeň', 'Broskve',
+
+            // Těstoviny a obiloviny
+            'Spaghetti', 'Penne', 'Lasagne', 'Rýže', 'Ryžová mouka', 'Pšeničná mouka',
+            'Žitná mouka', 'Kukuřičná mouka', 'Ovesné vločky', 'Couscous', 'Quinoa', 'Žita',
+            'Kroupy', 'Polenta', 'Chléb', 'Toustový chléb',
+
+            // Omáčky a koření
+            'Olivový olej', 'Rostlinný olej', 'Sezamový olej', 'Máslo', 'Česnek', 'Petržel',
+            'Bazalika', 'Oregáno', 'Tymián', 'Rozmarýn', 'Majoránka', 'Oregáno', 'Paprika',
+            'Pepř', 'Sůl', 'Cukr', 'Vanilka', 'Skořice', 'Kardamom', 'Koriandr', 'Kmín',
+            'Hořčice', 'Ocet', 'Worcesterova omáčka', 'Sójová omáčka', 'Čili omáčka',
+
+            // Speciální ingredience
+            'Med', 'Mák', 'Slunečnicové semínko', 'Dýňová semínka', 'Lískové oříšky', 'Mandle',
+            'Arašídy', 'Vlašské oříšky', 'Kešu', 'Pinové oříšky', 'Fazole', 'Čočka', 'Cizrna',
+            'Panenský kokosový olej', 'Mantle',
+
+            // Nápoje a tekutiny
+            'Voda', 'Vino', 'Pivo', 'Rum', 'Vodka', 'Brandy', 'Koňak',
+
+            // Další
+            'Chili', 'Káva', 'Čaj', 'Čokoláda', 'Kakao', 'Mák', 'Ocet balzamico', 'Tahini',
+            'Aromatické byliny', 'Kurkuma', 'Zázvorem', 'Muškátový oříšek'
+        ];
+
+        // Databáze receptů
+        const recipes = [
+            {
+                name: 'Spaghetti Bolognese',
+                ingredients: ['Spaghetti', 'Mleté hovězí maso', 'Rajčata', 'Cibule', 'Česnek', 'Olivový olej', 'Oregáno', 'Sůl', 'Pepř'],
+                instructions: '1. Zažhajte olej a restujte cibuli a česnek\n2. Přidejte mleté maso a restujte\n3. Vlijte rajčata a oregáno\n4. Vařte 20 minut\n5. Poznávaní těstoviny a podávejte',
+                time: '30 min'
+            },
+            {
+                name: 'Kuřecí tikka masala',
+                ingredients: ['Kuřecí prsa', 'Jogurt', 'Koření', 'Cibule', 'Česnek', 'Paprika', 'Skořice', 'Mleté kurkuma', 'Smetana', 'Rajčata'],
+                instructions: '1. Marinujte kuřete v jogurtu a koření\n2. Smažte kuřete\n3. Restujte cibuli a česnek\n4. Přidejte rajčata a smetan\n5. Přidejte kuřete zpět a vařte',
+                time: '45 min'
+            },
+            {
+                name: 'Vegetáriánský chili',
+                ingredients: ['Fazole', 'Rajčata', 'Paprika', 'Cibule', 'Česnek', 'Čili', 'Cumula', 'Olivový olej'],
+                instructions: '1. Restujte cibuli a česnek v oleji\n2. Přidejte papriku a rajčata\n3. Přidejte fazole a čili\n4. Vařte 30 minut',
+                time: '40 min'
+            },
+            {
+                name: 'Omelet',
+                ingredients: ['Vejce', 'Máslo', 'Sůl', 'Pepř', 'Parmezan'],
+                instructions: '1. Vyklepte vejce do mísy\n2. Ušlehejte se solí a pepřem\n3. Rozpusťte máslo na pánvi\n4. Vlijte vejce a vařte, dokud není pevné',
+                time: '10 min'
+            },
+            {
+                name: 'Rýžový pokrm s kuřetem',
+                ingredients: ['Rýže', 'Kuřecí prsa', 'Paprika', 'Cibule', 'Česnek', 'Voda', 'Olivový olej'],
+                instructions: '1. Restujte cibuli a česnek\n2. Přidejte kuřete a smažte\n3. Přidejte rýži a papriku\n4. Vlijte vodu a vařte 20 minut',
+                time: '35 min'
+            },
+            {
+                name: 'Zeleninová polévka',
+                ingredients: ['Brambory', 'Mrkev', 'Celer', 'Cibule', 'Rajčata', 'Voda', 'Sůl', 'Pepř', 'Petržel'],
+                instructions: '1. Pokrájejte zeleninu\n2. Vlijte vodu a přiveďte k varu\n3. Vaření, dokud není zelenina měkká\n4. Ochutinjte a podávejte',
+                time: '40 min'
+            },
+            {
+                name: 'Pita s kuřetem',
+                ingredients: ['Kuřecí prsa', 'Cibule', 'Paprika', 'Měkký sýr', 'Rajčata', 'Salát'],
+                instructions: '1. Smažte pokrojené kuřete\n2. Opékejte pitu\n3. Naplňte pitu kuřetem a zeleninou\n4. Přidejte sýr a salát',
+                time: '25 min'
+            },
+            {
+                name: 'Syrečka na másle s česnekem',
+                ingredients: ['Treska', 'Máslo', 'Česnek', 'Citrón', 'Petržel', 'Sůl', 'Pepř'],
+                instructions: '1. Připravte složené máslo s česnekem\n2. Smažte rybu na pánvi\n3. Umístěte máslo navrchu\n4. Podavačte s citrónopem',
+                time: '20 min'
+            },
+            {
+                name: 'Čokoládový dort',
+                ingredients: ['Čokoláda', 'Máslo', 'Vejce', 'Mouka', 'Cukr', 'Vanilka', 'Prášek do pečiva'],
+                instructions: '1. Roztavte čokoládu a máslo\n2. Ušlehejte vejce s cukrem\n3. Smíchejte ingredience\n4. Pečte na 180°C 30 minut',
+                time: '45 min'
+            },
+            {
+                name: 'Bramborová kaše',
+                ingredients: ['Brambory', 'Máslo', 'Mléko', 'Sůl', 'Pepř', 'Parmezan'],
+                instructions: '1. Vařte brambory, dokud nejsou měkké\n2. Sceďte a vraťte do hrnce\n3. Přidejte máslo a mléko\n4. Utřete a ochutinjte',
+                time: '25 min'
+            },
+            {
+                name: 'Cesar salát',
+                ingredients: ['Hlávkový salát', 'Parmezan', 'Chléb', 'Česnek', 'Hořčice', 'Olivový olej', 'Citrón'],
+                instructions: '1. Pokrájejte hlávkový salát\n2. Vytvořte dressing z ostatních ingrediencí\n3. Smíchejte salát s dresingem\n4. Podavačte se pečivem',
+                time: '15 min'
+            },
+            {
+                name: 'Těstovinový gratin',
+                ingredients: ['Penne', 'Mozzarella', 'Parmezan', 'Rajčata', 'Česnekový olej', 'Oregáno'],
+                instructions: '1. Vařte těstoviny\n2. Smíchejte s rajčaty a oregánem\n3. Umístěte do zapékací mísy\n4. Pokrojíce sýrem a pečte 20 minut',
+                time: '35 min'
+            },
+            {
+                name: 'Smažená kuřecí nudlička',
+                ingredients: ['Kuřecí prsa', 'Rýže', 'Vejce', 'Cibule', 'Česnek', 'Sójová omáčka', 'Sezamový olej'],
+                instructions: '1. Pokrojíte kuřete a cibuli\n2. Smažte všechno na oleji\n3. Přidejte rýži a vejce\n4. Dochutite sojovou omáčkou',
+                time: '30 min'
+            },
+            {
+                name: 'Zapečený brambor',
+                ingredients: ['Brambory', 'Máslo', 'Smetana', 'Česnek', 'Parmezan', 'Sůl', 'Pepř'],
+                instructions: '1. Pokrájejte brambory\n2. Vrstvujte v zapékací míse\n3. Vlijte smetan a přidejte máslo\n4. Pečte 45 minut na 180°C',
+                time: '60 min'
+            },
+            {
+                name: 'Luštěninová polévka',
+                ingredients: ['Čočka', 'Cibule', 'Mrkev', 'Celer', 'Rajčata', 'Voda', 'Olivový olej', 'Sůl'],
+                instructions: '1. Restujte cibuli a mrkev\n2. Přidejte čočku a rajčata\n3. Vlijte vodu a vařte 30 minut\n4. Ochutinjte solí',
+                time: '45 min'
+            },
+            {
+                name: 'Grilovaný losos',
+                ingredients: ['Losos', 'Citrón', 'Petržel', 'Sůl', 'Pepř', 'Olivový olej'],
+                instructions: '1. Připravte gril\n2. Natřete lososa olejem\n3. Grilujte 4-5 minut z obou stran\n4. Podavačte s citrónem',
+                time: '20 min'
+            },
+            {
+                name: 'Kuřecí nudličky s medem',
+                ingredients: ['Kuřecí prsa', 'Med', 'Sójová omáčka', 'Česnek', 'Zázvor', 'Sezamový olej'],
+                instructions: '1. Pokrojíte kuřete\n2. Restujte s česnekem a zázvor\n3. Přidejte medickou a sojovou omáčku\n4. Vařte 15 minut',
+                time: '25 min'
+            },
+            {
+                name: 'Rajčatová omáčka',
+                ingredients: ['Rajčata', 'Cibule', 'Česnek', 'Olivový olej', 'Oregáno', 'Sůl', 'Pepř'],
+                instructions: '1. Restujte cibuli a česnek\n2. Přidejte rajčata a oregáno\n3. Vařte 20 minut\n4. Použijte ke těstovinama',
+                time: '30 min'
+            },
+            {
+                name: 'Smažená kuřecí maso',
+                ingredients: ['Kuřecí prsa', 'Mouka', 'Vejce', 'Sůl', 'Pepř', 'Rostlinný olej'],
+                instructions: '1. Připravte cesta s vejci\n2. Omočte maso v mouce a vejci\n3. Smažte v oleji, dokud není zlatavé\n4. Podavačte s citrónem',
+                time: '20 min'
+            },
+            {
+                name: 'Cuketový salátek',
+                ingredients: ['Cuketa', 'Rajčata', 'Cibule', 'Petržel', 'Olivový olej', 'Citrón', 'Sůl'],
+                instructions: '1. Pokrájejte cuketu a rajčata\n2. Přidejte cibuli a petržel\n3. Dochutite olejem a citrónem\n4. Nechte stát v chladičce',
+                time: '15 min'
+            }
+        ];
+
+        // Inicializace
+        const ingredientsList = document.getElementById('ingredientsList');
+        const recipesList = document.getElementById('recipesList');
+        const findRecipesBtn = document.getElementById('findRecipesBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const searchBox = document.getElementById('ingredientSearch');
+        const messageDiv = document.getElementById('message');
+        const selectedCountDiv = document.getElementById('selectedCount');
+        const countValue = document.getElementById('countValue');
+
+        let selectedIngredients = new Set();
+
+        // Vykreslení ingrediencí
+        function renderIngredients(filter = '') {
+            ingredientsList.innerHTML = '';
+            const filtered = ingredients.filter(ing => 
+                ing.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            filtered.forEach(ingredient => {
+                const div = document.createElement('div');
+                div.className = 'ingredient-item';
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = ingredient;
+                checkbox.checked = selectedIngredients.has(ingredient);
+                
+                checkbox.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        selectedIngredients.add(ingredient);
+                    } else {
+                        selectedIngredients.delete(ingredient);
+                    }
+                    updateSelectedCount();
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = ingredient;
+                label.textContent = ingredient;
+
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                ingredientsList.appendChild(div);
+            });
+        }
+
+        function updateSelectedCount() {
+            if (selectedIngredients.size > 0) {
+                selectedCountDiv.style.display = 'inline-block';
+                countValue.textContent = selectedIngredients.size;
+            } else {
+                selectedCountDiv.style.display = 'none';
+            }
+        }
+
+        // Hledání receptů
+        function findRecipes() {
+            if (selectedIngredients.size === 0) {
+                showMessage('Vyberte alespoň jednu ingredienci!', 'error');
+                recipesList.innerHTML = '<div class="no-recipes">Vyberte ingredience, abyste viděli recepty</div>';
+                return;
+            }
+
+            const matchedRecipes = recipes.map(recipe => {
+                const matchedIngredients = recipe.ingredients.filter(ing =>
+                    selectedIngredients.has(ing)
+                );
+                const matchPercentage = Math.round((matchedIngredients.length / recipe.ingredients.length) * 100);
+                
+                return {
+                    ...recipe,
+                    matchedCount: matchedIngredients.length,
+                    matchPercentage,
+                    missingIngredients: recipe.ingredients.filter(ing => !selectedIngredients.has(ing))
+                };
+            }).filter(r => r.matchPercentage >= 50)
+              .sort((a, b) => b.matchPercentage - a.matchPercentage);
+
+            if (matchedRecipes.length === 0) {
+                recipesList.innerHTML = '<div class="no-recipes">😢 Bohužel jsme nenašli žádné recepty s vašimi ingrediencemi. Zkuste přidat více ingrediencí!</div>';
+                showMessage(`Nenašli jsme recepty s více než 50% shodou. Máte jen ${selectedIngredients.size} ingrediencí.`, 'info');
+                return;
+            }
+
+            showMessage(`Našli jsme ${matchedRecipes.length} receptů! 🎉`, 'success');
+            renderRecipes(matchedRecipes);
+        }
+
+        function renderRecipes(recipes) {
+            recipesList.innerHTML = '';
+            
+            recipes.forEach(recipe => {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                
+                const html = `
+                    <div class="recipe-name">${recipe.name}</div>
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">⏱️ Čas přípravy:</div>
+                        <div class="recipe-section-content">${recipe.time}</div>
+                    </div>
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">✅ Máte:</div>
+                        <div class="recipe-section-content">${recipe.matchedCount}/${recipe.ingredients.length} ingrediencí</div>
+                    </div>
+                    ${recipe.missingIngredients.length > 0 ? `
+                        <div class="recipe-section">
+                            <div class="recipe-section-title">❌ Chybí vám:</div>
+                            <div class="recipe-section-content">${recipe.missingIngredients.join(', ')}</div>
+                        </div>
+                    ` : '<div class="recipe-section"><div class="recipe-section-content">🎉 Máte všechny ingredience!</div></div>'}
+                    <div class="recipe-section">
+                        <div class="recipe-section-title">📝 Postup:</div>
+                        <div class="recipe-section-content">${recipe.instructions.replace(/\n/g, '<br>')}</div>
+                    </div>
+                    <div class="match-percentage">Shoda: ${recipe.matchPercentage}%</div>
+                `;
+                
+                card.innerHTML = html;
+                recipesList.appendChild(card);
+            });
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = 'message show';
+            messageDiv.style.borderLeftColor = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#667eea';
+            messageDiv.style.backgroundColor = type === 'error' ? '#ffe6e6' : type === 'success' ? '#e6ffe6' : '#f0f4ff';
+            messageDiv.style.color = type === 'error' ? '#ff6b6b' : type === 'success' ? '#51cf66' : '#667eea';
+        }
+
+        // Event listenery
+        findRecipesBtn.addEventListener('click', findRecipes);
+        clearBtn.addEventListener('click', () => {
+            selectedIngredients.clear();
+            renderIngredients();
+            updateSelectedCount();
+            recipesList.innerHTML = '';
+            messageDiv.classList.remove('show');
+        });
+
+        searchBox.addEventListener('input', (e) => {
+            renderIngredients(e.target.value);
+        });
+
+        // Počáteční vykreslení
+        renderIngredients();
+        updateSelectedCount();
+    </script>
+</body>
+</html>
