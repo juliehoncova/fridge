@@ -583,8 +583,9 @@
               .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
             if (matchedRecipes.length === 0) {
-                recipesList.innerHTML = '<div class="no-recipes">😢 No recipes found with only your selected ingredients. Try adding more ingredients!</div>';
-                showMessage(`You don't have all ingredients for any recipe. Add more ingredients to find recipes!`, 'info');
+                const customRecipe = createCustomRecipe(Array.from(selectedIngredients));
+                showMessage('No exact recipe found. Here is a custom recipe from your ingredients!', 'info');
+                renderRecipes([customRecipe], true);
                 return;
             }
 
@@ -592,7 +593,35 @@
             renderRecipes(matchedRecipes);
         }
 
-        function renderRecipes(recipes) {
+        function createCustomRecipe(ingredients) {
+            const title = ingredients.length === 1
+                ? `Custom recipe with ${ingredients[0]}`
+                : `Custom recipe with ${ingredients.slice(0, 3).join(', ')}${ingredients.length > 3 ? ' and more' : ''}`;
+
+            const hasProtein = ingredients.some(ing => ['Chicken Breast', 'Ground Chicken', 'Chicken Thighs', 'Beef', 'Ground Beef', 'Pork', 'Ground Pork', 'Sausage', 'Bacon', 'Ham', 'Turkey', 'Duck', 'Venison', 'Lamb', 'Salmon', 'Trout', 'Cod', 'Tuna'].includes(ing));
+            const hasGrain = ingredients.some(ing => ['Spaghetti', 'Penne', 'Lasagna', 'Rice', 'Rice Flour', 'Quinoa', 'Couscous', 'Bread', 'Toast Bread', 'Polenta', 'Barley', 'Oatmeal'].includes(ing));
+            const hasVegetables = ingredients.some(ing => ['Onion', 'Garlic', 'Potato', 'Sweet Potato', 'Carrot', 'Celery', 'Tomato', 'Bell Pepper', 'Cucumber', 'Zucchini', 'Eggplant', 'Cabbage', 'Broccoli', 'Cauliflower', 'Lettuce', 'Spinach', 'Swiss Chard', 'Leek', 'Okra', 'Artichoke', 'Parsley', 'Basil'].includes(ing));
+
+            const steps = [
+                '1. Prepare and wash all selected ingredients.',
+                hasProtein ? '2. Cook the protein first until fully done.' : '2. Prepare the main ingredients as needed.',
+                hasGrain ? '3. Cook the grains or pasta until tender.' : '3. Combine the ingredients in a pan or bowl.',
+                '4. Season with salt, pepper, and any spices you like.',
+                '5. Serve warm and enjoy.'
+            ];
+
+            return {
+                name: title,
+                ingredients,
+                instructions: steps.join('\n'),
+                time: '30 min',
+                matchedCount: ingredients.length,
+                matchPercentage: 100,
+                missingIngredients: []
+            };
+        }
+
+        function renderRecipes(recipes, isCustom = false) {
             recipesList.innerHTML = '';
             
             recipes.forEach(recipe => {
