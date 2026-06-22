@@ -59,7 +59,8 @@ The app includes over **20 prepared recipes** including:
 ## 💡 Usage Tips
 
 - The more ingredients you select, the more exact-match recipes you can discover
-- Recipes are automatically filtered - only recipes with a 100% ingredient match are shown
+- Recipes are automatically filtered - only recipes whose required ingredients are all selected are shown
+- You do not need to use every selected ingredient; recipes can be a subset of your selection
 - Recipes are sorted by highest match percentage first
 - If there is no exact match, the app generates a custom recipe using your selected ingredients
 
