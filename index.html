@@ -170,6 +170,18 @@
             background: #5b21b6;
         }
 
+        .btn-search-online {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 55%, #4c1d95 100%);
+            color: white;
+            flex: 1;
+            min-width: 170px;
+        }
+
+        .btn-search-online:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(124, 77, 255, 0.35);
+        }
+
         .recipes-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -331,6 +343,9 @@
                     <div class="action-buttons">
                         <button class="btn-find-recipes" id="findRecipesBtn">
                             🔍 Find Recipes
+                        </button>
+                        <button class="btn-search-online" id="searchOnlineBtn">
+                            🌐 Search Online
                         </button>
                         <button class="btn-clear" id="clearBtn">
                             ✕ Clear All
@@ -635,6 +650,17 @@
             };
         }
 
+        function searchRecipesOnline() {
+            if (selectedIngredients.size === 0) {
+                showMessage('Select at least one ingredient before searching online.', 'error');
+                return;
+            }
+
+            const query = `${Array.from(selectedIngredients).join(' ')} recipe`;
+            const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.open(searchUrl, '_blank');
+        }
+
         function renderRecipes(recipes, isCustom = false) {
             recipesList.innerHTML = '';
             
@@ -680,6 +706,7 @@
 
         // Event listeners
         findRecipesBtn.addEventListener('click', findRecipes);
+        document.getElementById('searchOnlineBtn').addEventListener('click', searchRecipesOnline);
         clearBtn.addEventListener('click', () => {
             selectedIngredients.clear();
             renderIngredients();

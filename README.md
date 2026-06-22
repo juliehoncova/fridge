@@ -20,6 +20,8 @@ An interactive web application that helps you discover what recipes you can cook
 
 - **Recipe Generator** - Click the "Find Recipes" button to display all recipes you can cook
 
+- **Online Recipe Search** - Click the "Search Online" button to search the web for recipes matching your selected ingredients
+
 - **Detailed Recipe Information**:
   - Preparation time
   - Number of ingredients you have
@@ -35,9 +37,10 @@ An interactive web application that helps you discover what recipes you can cook
 2. Select ingredients you have at home by clicking their checkboxes
 3. Use the search box for quick navigation (e.g., type "chicken" to see only chicken-related ingredients)
 4. Once you've selected ingredients, click the **"🔍 Find Recipes"** button
-5. The app displays only recipes you can cook with all required ingredients
-6. If no exact recipe is found, the app creates a custom recipe from your selected ingredients
-7. To clear the selection, click the **"✕ Clear All"** button
+5. If you want more options, click the **"🌐 Search Online"** button to search the web for recipes using your selected ingredients
+6. The app displays only recipes you can cook with all required ingredients
+7. If no exact recipe is found, the app creates a custom recipe from your selected ingredients
+8. To clear the selection, click the **"✕ Clear All"** button
 
 ## 📋 Number of Recipes
 
