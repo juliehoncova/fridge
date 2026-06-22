@@ -22,6 +22,8 @@ An interactive web application that helps you discover what recipes you can cook
 
 - **Online Recipe Search** - Click the "Search Online" button to search the web for recipes matching your selected ingredients
 
+- **Add Custom Recipes** - Click the "Add Recipe" button to create and save your own recipes to the app
+
 - **Detailed Recipe Information**:
   - Preparation time
   - Number of ingredients you have
@@ -38,9 +40,10 @@ An interactive web application that helps you discover what recipes you can cook
 3. Use the search box for quick navigation (e.g., type "chicken" to see only chicken-related ingredients)
 4. Once you've selected ingredients, click the **"🔍 Find Recipes"** button
 5. If you want more options, click the **"🌐 Search Online"** button to search the web for recipes using your selected ingredients
-6. The app displays only recipes you can cook with all required ingredients
-7. If no exact recipe is found, the app creates a custom recipe from your selected ingredients
-8. To clear the selection, click the **"✕ Clear All"** button
+6. To add your own recipes, click the **"➕ Add Recipe"** button and fill in the recipe details
+7. The app displays only recipes you can cook with all required ingredients
+8. If no exact recipe is found, the app creates a custom recipe from your selected ingredients
+9. To clear the selection, click the **"✕ Clear All"** button
 
 ## 📋 Number of Recipes
 

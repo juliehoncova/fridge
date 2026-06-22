@@ -182,6 +182,115 @@
             box-shadow: 0 5px 15px rgba(124, 77, 255, 0.35);
         }
 
+        .btn-add-recipe {
+            background: #10b981;
+            color: white;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .btn-add-recipe:hover {
+            background: #059669;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            font-size: 1.5em;
+            color: #6d28d9;
+            margin-bottom: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #d8b4fe;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
+        }
+
+        .btn-submit {
+            background: #10b981;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: #059669;
+        }
+
         .recipes-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -347,6 +456,9 @@
                         <button class="btn-search-online" id="searchOnlineBtn">
                             🌐 Search Online
                         </button>
+                        <button class="btn-add-recipe" id="addRecipeBtn">
+                            ➕ Add Recipe
+                        </button>
                         <button class="btn-clear" id="clearBtn">
                             ✕ Clear All
                         </button>
@@ -356,6 +468,35 @@
                     <div class="recipes-list" id="recipesList"></div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding new recipes -->
+    <div id="recipeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>➕ Add New Recipe</span>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="recipeForm">
+                <div class="form-group">
+                    <label for="recipeName">Recipe Name *</label>
+                    <input type="text" id="recipeName" placeholder="e.g., Pasta Carbonara" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipeTime">Preparation Time *</label>
+                    <input type="text" id="recipeTime" placeholder="e.g., 30 min" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipeIngredients">Ingredients (comma-separated) *</label>
+                    <textarea id="recipeIngredients" placeholder="e.g., Pasta, Eggs, Bacon, Parmesan" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="recipeInstructions">Instructions *</label>
+                    <textarea id="recipeInstructions" placeholder="Step-by-step cooking instructions" required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Add Recipe</button>
+            </form>
         </div>
     </div>
 
@@ -705,6 +846,53 @@
         }
 
         // Event listeners
+        // Modal functionality
+        const recipeModal = document.getElementById('recipeModal');
+        const addRecipeBtn = document.getElementById('addRecipeBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const recipeForm = document.getElementById('recipeForm');
+
+        addRecipeBtn.addEventListener('click', () => {
+            recipeModal.classList.add('show');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            recipeModal.classList.remove('show');
+            recipeForm.reset();
+        });
+
+        recipeModal.addEventListener('click', (e) => {
+            if (e.target === recipeModal) {
+                recipeModal.classList.remove('show');
+                recipeForm.reset();
+            }
+        });
+
+        recipeForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newRecipe = {
+                name: document.getElementById('recipeName').value,
+                time: document.getElementById('recipeTime').value,
+                ingredients: document.getElementById('recipeIngredients').value
+                    .split(',')
+                    .map(ing => ing.trim())
+                    .filter(ing => ing.length > 0),
+                instructions: document.getElementById('recipeInstructions').value
+            };
+
+            if (newRecipe.ingredients.length === 0) {
+                showMessage('Please add at least one ingredient.', 'error');
+                return;
+            }
+
+            recipes.push(newRecipe);
+            showMessage(`Recipe "${newRecipe.name}" added successfully! \ud83c\udf89`, 'success');
+            
+            recipeForm.reset();
+            recipeModal.classList.remove('show');
+        });
+
         findRecipesBtn.addEventListener('click', findRecipes);
         document.getElementById('searchOnlineBtn').addEventListener('click', searchRecipesOnline);
         clearBtn.addEventListener('click', () => {
