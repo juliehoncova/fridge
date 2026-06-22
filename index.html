@@ -579,16 +579,16 @@
                     matchPercentage,
                     missingIngredients: recipe.ingredients.filter(ing => !selectedIngredients.has(ing))
                 };
-            }).filter(r => r.matchPercentage >= 50)
+            }).filter(r => r.missingIngredients.length === 0)
               .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
             if (matchedRecipes.length === 0) {
-                recipesList.innerHTML = '<div class="no-recipes">😢 Unfortunately, we found no recipes with your ingredients. Try adding more ingredients!</div>';
-                showMessage(`No recipes found with more than 50% match. You have ${selectedIngredients.size} ingredients.`, 'info');
+                recipesList.innerHTML = '<div class="no-recipes">😢 No recipes found with only your selected ingredients. Try adding more ingredients!</div>';
+                showMessage(`You don't have all ingredients for any recipe. Add more ingredients to find recipes!`, 'info');
                 return;
             }
 
-            showMessage(`Found ${matchedRecipes.length} recipes! 🎉`, 'success');
+            showMessage(`Found ${matchedRecipes.length} recipes you can cook with your ingredients! 🎉`, 'success');
             renderRecipes(matchedRecipes);
         }
 
