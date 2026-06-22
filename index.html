@@ -579,17 +579,17 @@
                     matchPercentage,
                     missingIngredients: recipe.ingredients.filter(ing => !selectedIngredients.has(ing))
                 };
-            }).filter(r => r.missingIngredients.length === 0)
+            }).filter(r => r.matchPercentage === 100)
               .sort((a, b) => b.matchPercentage - a.matchPercentage);
 
             if (matchedRecipes.length === 0) {
                 const customRecipe = createCustomRecipe(Array.from(selectedIngredients));
-                showMessage('No exact recipe found. Here is a custom recipe from your ingredients!', 'info');
+                showMessage('No exact recipe found. Here is a custom recipe created from your ingredients!', 'info');
                 renderRecipes([customRecipe], true);
                 return;
             }
 
-            showMessage(`Found ${matchedRecipes.length} recipes you can cook with your ingredients! 🎉`, 'success');
+            showMessage(`Found ${matchedRecipes.length} recipes with a 100% ingredient match! 🎉`, 'success');
             renderRecipes(matchedRecipes);
         }
 

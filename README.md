@@ -35,8 +35,8 @@ An interactive web application that helps you discover what recipes you can cook
 2. Select ingredients you have at home by clicking their checkboxes
 3. Use the search box for quick navigation (e.g., type "chicken" to see only chicken-related ingredients)
 4. Once you've selected ingredients, click the **"🔍 Find Recipes"** button
-5. The app displays all recipes you can cook (minimum 50% match)
-6. Recipes are sorted by match percentage
+5. The app displays only recipes you can cook with all required ingredients
+6. If no exact recipe is found, the app creates a custom recipe from your selected ingredients
 7. To clear the selection, click the **"✕ Clear All"** button
 
 ## 📋 Number of Recipes
@@ -58,10 +58,10 @@ The app includes over **20 prepared recipes** including:
 
 ## 💡 Usage Tips
 
-- The more ingredients you select, the more recipes you'll find
-- Recipes are automatically filtered - only those with at least 50% match are shown
+- The more ingredients you select, the more exact-match recipes you can discover
+- Recipes are automatically filtered - only recipes with a 100% ingredient match are shown
 - Recipes are sorted by highest match percentage first
-- If you're missing just a few ingredients, the list will tell you what to buy
+- If there is no exact match, the app generates a custom recipe using your selected ingredients
 
 ## 📱 Compatibility
 
